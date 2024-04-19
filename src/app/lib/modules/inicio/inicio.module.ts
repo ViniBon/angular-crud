@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { PoPageModule } from '@po-ui/ng-components';
 //import { CoreModule } from '../../core/core.module';
-import { InicioComponent } from './pages/inicio.component';
+import { InicioPage } from './pages/inicio.page';
 import { InicioRoutingModule } from './inicio-routing.module';
 
 @NgModule({
   declarations: [
-    InicioComponent
+    InicioPage
   ],
   imports: [
    //CoreModule,
