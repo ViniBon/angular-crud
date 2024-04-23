@@ -1,0 +1,36 @@
+<po-page-default 
+  [p-title]="titulo"
+  [p-actions]="actions"
+  [p-breadcrumb]="breadcrumb"
+  >
+
+  <form [formGroup]="form">
+    <div po-row>
+      <po-input 
+        #inputNome
+        class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
+        name="nome"
+        (p-blur)="validateFields()"
+        formControlName="nome"
+        [p-label]="'Nome'"
+        type="text"
+        p-required="true"
+        [p-placeholder]="'Informe o nome'"
+      ></po-input>
+    </div>
+    <div po-row>
+      <po-input 
+        #inputEmail
+        class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
+        name="email"
+        (p-blur)="validateFields()"
+        formControlName="email"
+        [p-label]="'E-mail'"
+        type="text"
+        p-required="true"
+        [p-placeholder]="'Informe o e-mail'"
+      ></po-input>
+    </div>
+  </form>
+  
+</po-page-default>

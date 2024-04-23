@@ -1,5 +1,14 @@
-<po-grid 
-  [p-data]="gridGetAllData" 
-  [p-columns]="columns">
-</po-grid>
+<po-divider>
+</po-divider>
 
+<po-table
+p-container="shadow"
+[p-sort]="true"
+[p-striped]="true"
+[p-columns]="tableColumns"
+[p-items]="tableItems"
+[p-actions]="tableActions"
+[p-loading]="isBusy"
+[p-draggable]="true"
+>
+</po-table>
