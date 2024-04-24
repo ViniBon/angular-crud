@@ -30,7 +30,7 @@ export class NovoUsuarioPage implements OnInit {
     {
       label: 'Cancelar',
       type: 'Default',
-      action: () => this.cancelarCadastro()
+      action: () => this.cancelarCadastro('/usuarios')
     },
   ];
 
@@ -95,10 +95,6 @@ export class NovoUsuarioPage implements OnInit {
     return false;
   }
 
-  novoUsuario() {
-    void this.router.navigate(['novo-usuario'], { relativeTo: this.activateRoute });
-  }
-
   salvarUsuario(form: UntypedFormGroup): void {
     if(this.validateFields() === false){
       return
@@ -106,8 +102,7 @@ export class NovoUsuarioPage implements OnInit {
     console.log(form)
   }
 
-  cancelarCadastro(): void {
-
+  cancelarCadastro(path: string): void {
+    void this.router.navigate([path], { relativeTo: this.activateRoute });
   }
-
 }

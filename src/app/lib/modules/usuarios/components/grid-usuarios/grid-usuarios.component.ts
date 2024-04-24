@@ -49,8 +49,10 @@ export class GridUsuariosComponent implements OnInit {
 
   private init(): void {
     this.isBusy = true;
-    this.tableItems = UsuariosApiService.getUsers();
-    setInterval(() => {this.isBusy = false}, 4000)
+    setInterval(() => {
+      this.isBusy = false
+      this.tableItems = UsuariosApiService.getUsers();
+    }, 4000)
   }
 
   private deleteRow(id: number): void {
