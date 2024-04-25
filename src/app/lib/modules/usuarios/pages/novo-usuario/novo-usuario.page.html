@@ -1,9 +1,9 @@
 <po-page-default 
-  [p-title]="titulo"
+[p-title]="titulo"
   [p-actions]="actions"
   [p-breadcrumb]="breadcrumb"
   >
-
+  
   <form [formGroup]="form">
     <div po-row>
       <po-input 
@@ -20,6 +20,45 @@
     </div>
     <div po-row>
       <po-input 
+      #inputSobrenome
+      class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
+      name="sobrenome"
+      (p-blur)="validateFields()"
+      formControlName="sobrenome"
+      [p-label]="'Sobrenome'"
+      type="text"
+      p-required="true"
+      [p-placeholder]="'Informe o sobrenome'"
+      ></po-input>
+    </div>
+    <div po-row>
+      <po-input 
+      #inputTelefone
+      class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
+      name="telefone"
+      (p-blur)="validateFields()"
+      formControlName="telefone"
+      [p-label]="'Telefone'"
+      type="number"
+      p-required="true"
+      [p-placeholder]="'Informe o telefone'"
+      ></po-input>
+    </div>
+    <div po-row>
+      <po-input 
+        #inputDataNasc
+        class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
+        name="dataNasc"
+        (p-blur)="validateFields()"
+        formControlName="dataNasc"
+        [p-label]="'Data de Nascimento'"
+        type="date"
+        p-required="true"
+        [p-placeholder]="'Informe a data de nascimento'"
+      ></po-input>
+    </div>
+    <div po-row>
+      <po-input 
         #inputEmail
         class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
         name="email"
@@ -29,8 +68,8 @@
         type="text"
         p-required="true"
         [p-placeholder]="'Informe o e-mail'"
-      ></po-input>
-    </div>
+        ></po-input>
+      </div>
   </form>
   
 </po-page-default>

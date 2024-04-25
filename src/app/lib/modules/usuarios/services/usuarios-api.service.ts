@@ -1,35 +1,46 @@
 import { Injectable } from "@angular/core";
 import { v4 as uuid } from 'uuid';
+import { SituacaoUsuario } from "../enums/situacao-usuario.enum";
 
-interface IUsuario  {
+export interface IUsuario  {
+    identificador: number;
     id: string;
+    nomeCompleto: string;
     nome: string;
-    email: string; 
+    sobrenome: string;
+    usuario: string;
+    telefone: number;
+    email: string;
+    dataNasc: string; 
+    status: SituacaoUsuario;
 };
 
+@Injectable()
 export class UsuariosApiService {
     private static key: string = 'users';
 
-    static getUsers(): IUsuario[] {
+    getUsers(): IUsuario[] {
         const data = localStorage.getItem(UsuariosApiService.key);
         return data ? JSON.parse(data) : [];
     }
 
-    static getUserById(id: string): IUsuario | undefined {
-        const users = UsuariosApiService.getUsers();
+    getUserById(id: string): IUsuario | undefined {
+        const users = this.getUsers();
         return users.find(user => user.id === id);
     }
 
-    static addUser(user: IUsuario): void {
+    addUser(user: IUsuario): void {
         const userUuid = uuid();
         user.id = userUuid;
-        const users = UsuariosApiService.getUsers();
+        user.nomeCompleto = (user.nome).toLowerCase()+ ' ' + (user.sobrenome).toLowerCase()
+
+        const users = this.getUsers();
         users.push(user);
         localStorage.setItem(UsuariosApiService.key, JSON.stringify(users));
     }
 
-    static updateUser(user: IUsuario): void {
-        const users = UsuariosApiService.getUsers();
+    updateUser(user: IUsuario): void {
+        const users = this.getUsers();
         const index = users.findIndex(u => u.id === user.id);
         if (index !== -1) {
             users[index] = user;
@@ -37,8 +48,8 @@ export class UsuariosApiService {
         }
     }
 
-    static deleteUser(id: string): void {
-        let users = UsuariosApiService.getUsers();
+    deleteUser(id: string): void {
+        let users = this.getUsers();
         users = users.filter(user => user.id !== id);
         localStorage.setItem(UsuariosApiService.key, JSON.stringify(users));
     }

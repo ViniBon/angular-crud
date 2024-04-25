@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {  PoDialogService, PoNotificationService, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
 import { UsuariosApiService } from '../../services/usuarios-api.service';
 import { forkJoin } from 'rxjs';
+import { SituacaoUsuario } from '../../enums/situacao-usuario.enum';
 
 @Component({
   selector: 'grid-usuarios',
@@ -17,31 +18,50 @@ export class GridUsuariosComponent implements OnInit {
   public readonly tableActions: Array<PoTableAction> = [
     {
       label: 'Editar',
-      action: (row: any) =>  this.router.navigate(["/editar/", row.id, "editar"])
+      action: (row: any) =>  this.router.navigate(["/editar/", row.id, "editar"]),
     },
     {
       label: 'Ver Detalhes',
-      action: (row: any) =>   this.router.navigate(["/detalhes/", row.id, "detalhes"])
+      action: (row: any) => this.router.navigate(['detalhes-usuario'], { relativeTo: this.route, queryParams: (row) }),
     },
     {
       label: 'Excluir',
-      action: (row: any) =>  this.deleteRow(row.id) //this.router.navigate(["/groups/", row.id, "excluir"])
+      action: (row: any) =>  this.deleteRow(row.id),
     }
   ];
 
   public tableColumns: PoTableColumn[] = [
-    { label: 'Nome', property: 'nome' },
+    { label: 'Nome completo', property: 'nomeCompleto' },
     { label: 'Email', property: 'email' },
-  ]
+    {
+      property: 'status',
+      type: 'label',
+      label: 'Status',
+      width: '5%',
+      labels: [
+        {
+          value: SituacaoUsuario.COMUM!,
+          color: 'color-11',
+          label: 'Comum',
+          textColor: 'white',
+        },
+        {
+          value: SituacaoUsuario.ADMIN!,
+          color: 'color-08',
+          label: 'Admin',
+          textColor: 'white',
+        }
+      ]
+    },
+];
 
   constructor( 
     private router: Router,
+    private route: ActivatedRoute,
     private readonly usuariosApiService: UsuariosApiService, 
     private poDialog: PoDialogService,
-    private notification: PoNotificationService
-  ){
-
-  }
+    private notification: PoNotificationService,
+  ){  }
 
   ngOnInit(): void {
     this.init();
@@ -51,7 +71,7 @@ export class GridUsuariosComponent implements OnInit {
     this.isBusy = true;
     setInterval(() => {
       this.isBusy = false
-      this.tableItems = UsuariosApiService.getUsers();
+      this.tableItems = this.usuariosApiService.getUsers();
     }, 4000)
   }
 
@@ -62,7 +82,7 @@ export class GridUsuariosComponent implements OnInit {
       confirm: async () => {
         this.isBusy = true;
         const observers = [];
-        observers.push(UsuariosApiService.deleteUser(id));
+        observers.push(this.usuariosApiService.deleteUser(id));
         this.notification.success('Usuário excluído com sucesso!');
         this.init();
         complete: () => this.isBusy = false
