@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
+import { v4 as uuid } from 'uuid';
 
 interface IUsuario  {
-    id: number;
+    id: string;
     nome: string;
     email: string; 
 };
@@ -9,25 +10,19 @@ interface IUsuario  {
 export class UsuariosApiService {
     private static key: string = 'users';
 
-    static initialize() {
-        const users: IUsuario[] = [
-            { id: 55, nome: 'Alice', email: 'alice@example.com' },
-            { id: 2, nome: 'Bob', email: 'bob@example.com' }
-        ];
-        localStorage.setItem(UsuariosApiService.key, JSON.stringify(users));
-    }
-
     static getUsers(): IUsuario[] {
         const data = localStorage.getItem(UsuariosApiService.key);
         return data ? JSON.parse(data) : [];
     }
 
-    static getUserById(id: number): IUsuario | undefined {
+    static getUserById(id: string): IUsuario | undefined {
         const users = UsuariosApiService.getUsers();
         return users.find(user => user.id === id);
     }
 
     static addUser(user: IUsuario): void {
+        const userUuid = uuid();
+        user.id = userUuid;
         const users = UsuariosApiService.getUsers();
         users.push(user);
         localStorage.setItem(UsuariosApiService.key, JSON.stringify(users));
@@ -42,7 +37,7 @@ export class UsuariosApiService {
         }
     }
 
-    static deleteUser(id: number): void {
+    static deleteUser(id: string): void {
         let users = UsuariosApiService.getUsers();
         users = users.filter(user => user.id !== id);
         localStorage.setItem(UsuariosApiService.key, JSON.stringify(users));

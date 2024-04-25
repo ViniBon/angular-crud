@@ -40,7 +40,7 @@ export class GridUsuariosComponent implements OnInit {
     private poDialog: PoDialogService,
     private notification: PoNotificationService
   ){
-      UsuariosApiService.initialize();
+
   }
 
   ngOnInit(): void {
@@ -55,8 +55,7 @@ export class GridUsuariosComponent implements OnInit {
     }, 4000)
   }
 
-  private deleteRow(id: number): void {
-    console.log(id)
+  private deleteRow(id: string): void {
     this.poDialog.confirm({
       title: "Excluir usuário",
       message: "Confirma a exclusão do respectivo usuário?",

@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { PoBreadcrumb, PoInputComponent, PoPageAction } from '@po-ui/ng-components';
+import { PoBreadcrumb, PoInputComponent, PoNotificationService, PoPageAction } from '@po-ui/ng-components';
+import { UsuariosApiService } from '../../services/usuarios-api.service';
 
 @Component({
   selector: 'app-novo-usuario',
@@ -17,7 +18,9 @@ export class NovoUsuarioPage implements OnInit {
 
   constructor(
     private router: Router,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    //private readonly usuariosApiService: UsuariosApiService, 
+    private notification: PoNotificationService
   ){
   }
   
@@ -25,7 +28,7 @@ export class NovoUsuarioPage implements OnInit {
     {
       label: 'Salvar',
       type: 'primary',
-      action: () => this.salvarUsuario(this.form.value)
+      action: () => this.salvarUsuario(this.form.value, '/usuarios')
     },
     {
       label: 'Cancelar',
@@ -95,11 +98,24 @@ export class NovoUsuarioPage implements OnInit {
     return false;
   }
 
-  salvarUsuario(form: UntypedFormGroup): void {
+  salvarUsuario(form: any, path: string): void {
     if(this.validateFields() === false){
-      return
+      return; 
     }
-    console.log(form)
+    let usersCheckEqualData = UsuariosApiService.getUsers();
+    let isEqual = usersCheckEqualData.map(user => {
+      if(user.nome === form.nome || user.email === form.email){
+        return false;
+      }
+      return;
+    });
+    if(isEqual.filter( (condition) =>  condition === false).length >= 1){
+      this.notification.warning('Há campos inválidos ou já há registros com esses dados!')
+    }else{
+      UsuariosApiService.addUser(form);
+      this.notification.success('Usuário incluído com sucesso!');
+      void this.router.navigate([path], { relativeTo: this.activateRoute });
+    }
   }
 
   cancelarCadastro(path: string): void {
