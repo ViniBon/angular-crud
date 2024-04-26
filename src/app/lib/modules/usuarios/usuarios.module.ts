@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { PoBreadcrumbModule, PoComboComponent, PoDividerModule, PoDynamicModule, PoFieldModule, PoInfoModule, PoLoadingModule, PoModalModule, PoPageModule, PoTableModule } from '@po-ui/ng-components';
+import { PoBreadcrumbModule, PoComboComponent, PoDividerModule, PoDynamicModule, PoFieldModule, PoInfoModule, PoLoadingModule, PoModalModule, PoModule, PoPageModule, PoTableModule } from '@po-ui/ng-components';
 import { UsuariosPage } from './pages/usuarios.page';
 import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { GridUsuariosComponent } from './components/grid-usuarios/grid-usuarios.component';
@@ -8,6 +8,7 @@ import { NovoUsuarioPage } from './pages/novo-usuario/novo-usuario.page';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetalhesUsuarioPage } from './pages/detalhes-usuario/detalhes-usuario.page';
 import { DetalhesUsuarioComponent } from './components/detalhes-usuario/detalhes-usuario.component';
+import { PoComboBaseComponent } from '@po-ui/ng-components/lib/components/po-field/po-combo/po-combo-base.component';
 @NgModule({
   declarations: [
     UsuariosPage,
@@ -15,10 +16,9 @@ import { DetalhesUsuarioComponent } from './components/detalhes-usuario/detalhes
     NovoUsuarioPage,
     DetalhesUsuarioPage,
     DetalhesUsuarioComponent,
-    PoComboComponent
   ],
   imports: [
-    CommonModule,
+    //CommonModule,
     PoBreadcrumbModule,
     PoPageModule,
     UsuariosRoutingModule,
@@ -30,8 +30,8 @@ import { DetalhesUsuarioComponent } from './components/detalhes-usuario/detalhes
     PoFieldModule,
     FormsModule,
     ReactiveFormsModule,
-    PoInfoModule
+    PoInfoModule,
   ],
-  providers: []
+  providers: [],
 })
 export class UsuariosModule { }

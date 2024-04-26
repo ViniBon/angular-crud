@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { v4 as uuid } from 'uuid';
 import { SituacaoUsuario } from "../enums/situacao-usuario.enum";
+import { generateIdentifier } from "../../../shared/utils/generate-identificator.utils";
 
 export interface IUsuario  {
-    identificador: number;
+    identificador: string;
     id: string;
     nomeCompleto: string;
     nome: string;
@@ -11,7 +12,7 @@ export interface IUsuario  {
     usuario: string;
     telefone: number;
     email: string;
-    dataNasc: string; 
+    dataNasc: number; 
     status: SituacaoUsuario;
 };
 
@@ -32,6 +33,7 @@ export class UsuariosApiService {
     addUser(user: IUsuario): void {
         const userUuid = uuid();
         user.id = userUuid;
+        user.identificador = generateIdentifier();
         user.nomeCompleto = (user.nome).toLowerCase()+ ' ' + (user.sobrenome).toLowerCase()
 
         const users = this.getUsers();
@@ -40,11 +42,24 @@ export class UsuariosApiService {
     }
 
     updateUser(user: IUsuario): void {
+        user.nomeCompleto = (user.nome).toLowerCase()+ ' ' + (user.sobrenome).toLowerCase()
         const users = this.getUsers();
         const index = users.findIndex(u => u.id === user.id);
+        console.log(index)
+        
         if (index !== -1) {
-            users[index] = user;
-            localStorage.setItem(UsuariosApiService.key, JSON.stringify(users));
+            // Create a new array with the updated user
+            const updatedUsers = [...users];
+            updatedUsers[index] = user;
+            
+            try {
+                // Update local storage
+                localStorage.setItem(UsuariosApiService.key, JSON.stringify(updatedUsers));
+            } catch (error) {
+                console.error('Error updating user in local storage:', error);
+            }
+        } else {
+            console.error('User not found with ID:', user.id);
         }
     }
 

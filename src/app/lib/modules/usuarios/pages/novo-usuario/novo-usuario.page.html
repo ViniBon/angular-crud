@@ -7,15 +7,16 @@
   <form [formGroup]="form">
     <div po-row>
       <po-input 
-        #inputNome
-        class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
-        name="nome"
-        (p-blur)="validateFields()"
-        formControlName="nome"
-        [p-label]="'Nome'"
-        type="text"
-        p-required="true"
-        [p-placeholder]="'Informe o nome'"
+      #inputNome
+      class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
+      name="nome"
+      (p-blur)="validarCampos()"
+      formControlName="nome"
+      [p-label]="'Nome'"
+      type="text"
+      p-required="true"
+      [p-placeholder]="'Informe o nome'"
+      [(ngModel)]="usuarioRegistro.nome"
       ></po-input>
     </div>
     <div po-row>
@@ -23,38 +24,13 @@
       #inputSobrenome
       class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
       name="sobrenome"
-      (p-blur)="validateFields()"
+      (p-blur)="validarCampos()"
       formControlName="sobrenome"
       [p-label]="'Sobrenome'"
       type="text"
       p-required="true"
       [p-placeholder]="'Informe o sobrenome'"
-      ></po-input>
-    </div>
-    <div po-row>
-      <po-input 
-      #inputTelefone
-      class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
-      name="telefone"
-      (p-blur)="validateFields()"
-      formControlName="telefone"
-      [p-label]="'Telefone'"
-      type="number"
-      p-required="true"
-      [p-placeholder]="'Informe o telefone'"
-      ></po-input>
-    </div>
-    <div po-row>
-      <po-input 
-        #inputDataNasc
-        class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
-        name="dataNasc"
-        (p-blur)="validateFields()"
-        formControlName="dataNasc"
-        [p-label]="'Data de Nascimento'"
-        type="date"
-        p-required="true"
-        [p-placeholder]="'Informe a data de nascimento'"
+      [(ngModel)]="usuarioRegistro.sobrenome"
       ></po-input>
     </div>
     <div po-row>
@@ -62,14 +38,57 @@
         #inputEmail
         class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
         name="email"
-        (p-blur)="validateFields()"
+        (p-blur)="validarCampos()"
         formControlName="email"
         [p-label]="'E-mail'"
         type="text"
         p-required="true"
-        [p-placeholder]="'Informe o e-mail'"
-        ></po-input>
-      </div>
+        [p-placeholder]="'Informe o e-mail Ex.usuario@dominio.com.br'"
+        [(ngModel)]="usuarioRegistro.email"
+      ></po-input>
+    </div>
+    <div po-row>
+      <po-input 
+      #inputTelefone
+      class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
+      name="telefone"
+      (p-blur)="validarCampos()"
+      formControlName="telefone"
+      [p-label]="'Telefone'"
+      p-required="true"
+      [p-placeholder]="'Informe o telefone Ex.47992638172'"
+      [(ngModel)]="usuarioRegistro.telefone"
+      ></po-input>
+    </div>
+    <div po-row>
+      <po-input 
+        #inputDataNasc
+        class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
+        name="dataNasc"
+        (p-blur)="validarCampos()"
+        formControlName="dataNasc"
+        [p-label]="'Data de Nascimento'"
+        p-required="true"
+        [p-placeholder]="'Informe a data de nascimento Ex.10021998'"
+        [(ngModel)]="usuarioRegistro.dataNasc"
+      ></po-input>
+    </div>
+    <div>
+      <po-select
+        #selectStatus
+        class="po-xl-6 po-md-6 po-sm-12 po-mt-2 po-label"
+        formControlName = "status"
+        name="status"
+        (p-blur)="validarCampos()"
+        p-label="Status do usuário"
+        type="text"
+        [p-placeholder]="'Selecione o status'"
+        p-required="true"
+        [p-options]="[
+        { label: 'COMUM', value: 'COMUM' },
+        { label: 'ADMIN', value: 'ADMIN' }
+        ]"
+      ></po-select>    
+    </div>
   </form>
-  
 </po-page-default>

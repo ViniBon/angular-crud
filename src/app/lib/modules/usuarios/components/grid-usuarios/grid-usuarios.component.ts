@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  PoDialogService, PoNotificationService, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
 import { UsuariosApiService } from '../../services/usuarios-api.service';
-import { forkJoin } from 'rxjs';
 import { SituacaoUsuario } from '../../enums/situacao-usuario.enum';
 
 @Component({
@@ -18,7 +17,7 @@ export class GridUsuariosComponent implements OnInit {
   public readonly tableActions: Array<PoTableAction> = [
     {
       label: 'Editar',
-      action: (row: any) =>  this.router.navigate(["/editar/", row.id, "editar"]),
+      action: (row: any) =>  this.router.navigate(['novo-usuario'], { relativeTo: this.route, queryParams: row}),
     },
     {
       label: 'Ver Detalhes',

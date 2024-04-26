@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {  PoDialogService, PoNotificationService, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
+import {  PoDialogService, PoNotificationService } from '@po-ui/ng-components';
 import { UsuariosApiService } from '../../services/usuarios-api.service';
-import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'detalhes-usuario',
