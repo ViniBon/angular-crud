@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { PoBreadcrumb, PoInputComponent, PoNotificationService, PoPageAction } from '@po-ui/ng-components';
-import { IUsuario, UsuariosApiService } from '../../services/usuarios-api.service';
+import { PoBreadcrumb, PoPageAction } from '@po-ui/ng-components';
+import {  UsuariosApiService } from '../../services/usuarios-api.service';
 
 @Component({
   selector: 'app-detalhes-usuario',
@@ -12,15 +11,14 @@ import { IUsuario, UsuariosApiService } from '../../services/usuarios-api.servic
 })
 export class DetalhesUsuarioPage implements OnInit {
 
-  public usuarioRegistro: any;
+  public usuarioRegistro!: Object;
 
   constructor(
     private router: Router,
     private activateRoute: ActivatedRoute,
-    private readonly usuariosApiService: UsuariosApiService, 
   ){  }
   
-  actions: Array<PoPageAction> = [
+  acoes: Array<PoPageAction> = [
     {
       label: 'Voltar',
       type: 'Default',

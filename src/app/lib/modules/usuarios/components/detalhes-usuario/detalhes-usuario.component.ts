@@ -1,30 +1,28 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import {  PoDialogService, PoNotificationService } from '@po-ui/ng-components';
-import { UsuariosApiService } from '../../services/usuarios-api.service';
+import { IUsuario, UsuariosApiService } from '../../services/usuarios-api.service';
+import { formatarNumeroTelefone } from '../../../../shared/utils/telephone-mask.utils';
+import { formatarData } from '../../../../shared/utils/date-mask.utils';
 
 @Component({
   selector: 'detalhes-usuario',
   templateUrl: './detalhes-usuario.component.html',
-  providers: [UsuariosApiService]
+  providers: []
 })
 export class DetalhesUsuarioComponent implements OnInit {
   
   @Input() usuarioRegistro: any;
 
-  constructor( 
-    private router: Router,
-    private route: ActivatedRoute,
-    private readonly usuariosApiService: UsuariosApiService, 
-    private poDialog: PoDialogService,
-    private notification: PoNotificationService
-  ){
+  public telefoneComMascara!: string;
+  public dataNascComMascara!: string;
 
-  }
+  constructor( ){  }
 
   ngOnInit(): void {
-
+    this.adicionarMascaras(this.usuarioRegistro)
   }
 
-
+  private adicionarMascaras(data: IUsuario): void{
+    this.telefoneComMascara = formatarNumeroTelefone(data.telefone);
+    this.dataNascComMascara = formatarData(data.dataNasc);
+  }
 }

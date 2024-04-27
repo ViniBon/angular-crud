@@ -18,7 +18,6 @@ import { PoComboBaseComponent } from '@po-ui/ng-components/lib/components/po-fie
     DetalhesUsuarioComponent,
   ],
   imports: [
-    //CommonModule,
     PoBreadcrumbModule,
     PoPageModule,
     UsuariosRoutingModule,

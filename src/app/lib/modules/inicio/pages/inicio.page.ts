@@ -11,10 +11,9 @@ export class InicioPage implements OnInit {
 
   actions: Array<PoPageAction> = [
     {
-      label: 'novoUsuario',
-
+      label: 'TESTE',
       type: 'primary',
-      action: () => this.novoUsuario()
+      //action: () => this.novoUsuario()
     },
   ];
 
@@ -22,16 +21,5 @@ export class InicioPage implements OnInit {
     return 'Inicio';//`${this.global.i18n.literals.bemVindo}, ${this.nomeUsuario}`;
   }
 
-  private nomeUsuario = '';
-
-
-
-  ngOnInit(): void {
-
-  }
-
-  novoUsuario() {
-    //void this.router.navigate(['novo-processo'], { relativeTo: this.activateRoute });
-  }
-
+  ngOnInit(): void { }
 }

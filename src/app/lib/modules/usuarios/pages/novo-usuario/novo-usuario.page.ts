@@ -4,8 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { PoBreadcrumb, PoDialogService, PoInputComponent, PoNotificationService, PoPageAction, PoSearchComponent, PoSelectComponent, PoSelectOption } from '@po-ui/ng-components';
 import { UsuariosApiService } from '../../services/usuarios-api.service';
-import { SituacaoUsuario } from '../../enums/situacao-usuario.enum';
-import { isValidDate } from '../../../../shared/utils/check-date.utils';
+import { checarValidadeData } from '../../../../shared/utils/check-date-validity.utils';
 
 @Component({
   selector: 'app-novo-usuario',
@@ -14,7 +13,6 @@ import { isValidDate } from '../../../../shared/utils/check-date.utils';
 })
 export class NovoUsuarioPage implements OnInit {
 
-  
   @ViewChild('inputNome', { static: true })
   inputNome: PoInputComponent | any;
 
@@ -40,14 +38,14 @@ export class NovoUsuarioPage implements OnInit {
     private router: Router,
     private activateRoute: ActivatedRoute,
     private readonly usuariosApiService: UsuariosApiService, 
-    private notification: PoNotificationService,
+    private notificacao: PoNotificationService,
     private poDialog: PoDialogService,
   ){
   }
 
-  actions: Array<PoPageAction> = []
+  acoes: Array<PoPageAction> = []
   
-  normalActions: Array<PoPageAction> = [
+  normalAcoes: Array<PoPageAction> = [
     {
       label: 'Salvar',
       type: 'primary',
@@ -60,7 +58,7 @@ export class NovoUsuarioPage implements OnInit {
     },
   ];
 
-  editActions: Array<PoPageAction> = [
+  editarAcoes: Array<PoPageAction> = [
     {
       label: 'Salvar edição',
       type: 'primary',
@@ -77,7 +75,7 @@ export class NovoUsuarioPage implements OnInit {
     items: [
       { label: 'Inicio', link: '/' },
       { label: 'Usuarios', link: '/usuarios' },
-      { label: 'Novo Usuario', link: '/novo-usuario' },
+      { label: 'Novo usuario', link: '/novo-usuario' },
     ],
   };
 
@@ -101,24 +99,23 @@ export class NovoUsuarioPage implements OnInit {
     return this.form.get('status')?.value || '';
   }
 
-
   public get titulo(): string {
     return 'Novo Usuário';//`${this.global.i18n.literals.bemVindo}, ${this.nomeUsuario}`;
   }
 
   ngOnInit(): void {
     this.usuarioRegistro = this.activateRoute.snapshot.queryParams;
-    console.log(this.usuarioRegistro.id === undefined)
     if (this.usuarioRegistro.id === undefined) {
-      this.actions = this.normalActions;
+      this.acoes = this.normalAcoes;
     }else{
-      this.actions = this.editActions;
+      this.acoes = this.editarAcoes ;
+      this.breadcrumb.items.pop();
+      this.breadcrumb.items.push({ label: 'Editar usuario', link: '/novo-usuario' })
     }
   
   }
 
- 
-  criarFormulario(): UntypedFormGroup {
+  private criarFormulario(): UntypedFormGroup {
     return new UntypedFormGroup({
       nome: new UntypedFormControl(null, [
         Validators.required,
@@ -149,8 +146,49 @@ export class NovoUsuarioPage implements OnInit {
     });
   }
 
+  private salvarUsuario(form: any, path: string): void {
+    if(this.validarCampos() === false){
+      return; 
+    }
+    if (this.validarDados(form) === false) {
+      return
+    }else{
+      this.poDialog.confirm({
+        title: "Salvar usuário",
+        message: "Deseja salvar o usuário?",
+        confirm: async () => {
+          form.nomeCompleto;
+          this.usuariosApiService.addUsuario(form);
+          this.notificacao.success('Usuário incluído com sucesso!'); 
+          void this.router.navigate([path], { relativeTo: this.activateRoute });
+        }
+      });     
+    }
+  }
 
-  validarCampos(): boolean {
+  private editarUsuario(form: any, path: string): void{
+    if (this.validarDados(form, true) === false) {
+      return
+    }else{
+      this.poDialog.confirm({
+        title: "Salvar edição",
+        message: "Deseja salvar a edição do usuário?",
+        confirm: async () => {
+          form.id = this.usuarioRegistro.id;
+          form.identificador = this.usuarioRegistro.identificador;  
+          this.usuariosApiService.updateUsuario(form);
+          this.notificacao.success('Edição efetuada com sucesso!'); 
+          void this.router.navigate([path], { relativeTo: this.activateRoute });
+        }
+      });     
+    }
+  }
+
+  private cancelarCadastro(path: string): void {
+    void this.router.navigate([path], { relativeTo: this.activateRoute });
+  }
+
+  public validarCampos(): boolean {
     if (this.form) {
       let formKeys = Object.keys(this.form.value);
       let inputs = [this.inputNome, this.inputSobrenome, this.inputTelefone, this.inputEmail, this.inputDataNasc];
@@ -172,81 +210,37 @@ export class NovoUsuarioPage implements OnInit {
     return false;
   }
 
-  validarDados(formData: any, isEdicao?: boolean): boolean{
+  private validarDados(formData: any, isEdicao?: boolean): boolean{
     let telefoneConvertido = Number(formData.telefone);
     let dataNascConvertido = Number(formData.dataNasc);
     if (Number.isNaN(telefoneConvertido) || Number.isNaN(dataNascConvertido)) {
-      this.notification.warning('Há campos inválidos!');
+      this.notificacao.warning('Há campos inválidos!');
       return false
     }
 
     if (formData.status === null) {
-      this.notification.warning('Há campos inválidos!');
+      this.notificacao.warning('Há campos inválidos!');
       return false
     }
 
-    if(!isValidDate(formData.dataNasc)){
-      this.notification.warning('Há campos inválidos!');
+    if(!checarValidadeData(formData.dataNasc)){
+      this.notificacao.warning('Há campos inválidos!');
       return false
     }
 
     if(!isEdicao){
-      let usersCheckEqualData = this.usuariosApiService.getUsers();
-      let isEqual = usersCheckEqualData.map(user => {
-        if(user.nome === formData.nome || user.email === formData.email){
+      let checarDadosIguais = this.usuariosApiService.getUsuarios();
+      let isIgual = checarDadosIguais.map(usuario => {
+        if(usuario.nome === formData.nome || usuario.email === formData.email){
           return false;
         }
         return;
       });
-      if(isEqual.filter( (condition) =>  condition === false).length >= 1){
-        this.notification.warning('Há campos inválidos ou já há registros com esses dados!');
+      if(isIgual.filter( (condicao) =>  condicao === false).length >= 1){
+        this.notificacao.warning('Há campos inválidos ou já há registros com esses dados!');
         return false;
       }
     }
     return true;
-  }
-
-  salvarUsuario(form: any, path: string): void {
-    if(this.validarCampos() === false){
-      return; 
-    }
-    if (this.validarDados(form) === false) {
-      return
-    }else{
-      this.poDialog.confirm({
-        title: "Salvar usuário",
-        message: "Deseja salvar o usuário?",
-        confirm: async () => {
-          form.nomeCompleto;
-          this.usuariosApiService.addUser(form);
-          this.notification.success('Usuário incluído com sucesso!'); 
-          void this.router.navigate([path], { relativeTo: this.activateRoute });
-        }
-      });     
-    }
-  }
-
-  editarUsuario(form: any, path: string): void{
-    console.log(form)
-   
-    if (this.validarDados(form, true) === false) {
-      return
-    }else{
-      this.poDialog.confirm({
-        title: "Salvar edição",
-        message: "Deseja salvar a edição do usuário?",
-        confirm: async () => {
-          form.id = this.usuarioRegistro.id;
-          form.identificador = this.usuarioRegistro.identificador;  
-          this.usuariosApiService.updateUser(form);
-          this.notification.success('Edição efetuada com sucesso!'); 
-          void this.router.navigate([path], { relativeTo: this.activateRoute });
-        }
-      });     
-    }
-  }
-
-  cancelarCadastro(path: string): void {
-    void this.router.navigate([path], { relativeTo: this.activateRoute });
   }
 }

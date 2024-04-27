@@ -1,14 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import {
+  PoCheckboxGroupOption,
+  PoDialogService,
   PoMenuItem,
   PoMenuModule,
+  PoModalAction,
+  PoModalComponent,
+  PoModalModule,
+  PoNotificationService,
   PoPageModule,
+  PoRadioGroupModule,
+  PoRadioModule,
+  PoToolbarAction,
   PoToolbarModule,
+  PoToolbarProfile,
 } from '@po-ui/ng-components';
+import { IdiomasApiService } from './lib/shared/services/idiomas-api.service';
+
 
 @Component({
   selector: 'app-root',
@@ -20,37 +32,84 @@ import {
     PoMenuModule,
     PoPageModule,
     HttpClientModule,
+    PoModalModule,
+    PoRadioModule,
+    PoRadioGroupModule
   ],
+  providers: [IdiomasApiService],
   templateUrl: './app.component.html',
 })
 export class AppComponent {
+
+  @ViewChild('modal') modalComponent!: PoModalComponent;
+
+  public size: any;
+
   readonly menus: Array<PoMenuItem> = [
     { 
       label: 'inicio', 
       link: 'inicio', 
+      icon: 'po-icon-home',
       action: this.onClick.bind(this) 
     },
     { 
       label: 'usuarios',
       link: 'usuarios', 
+      icon: 'po-icon-user',
       action: this.onClick.bind(this) 
     },
   ];
-  
 
-  public gridData: any[] = [
-    {
-        ProductID: 1,
-        ProductName: 'Chai',
-        UnitPrice: '18',
-        Category: {
-            CategoryID: '1',
-            CategoryName: 'Beverages'
-        }
+  private onClick() {  }
+
+  profile: PoToolbarProfile = {
+    avatar: 'https://via.placeholder.com/48x48?text=AVATAR',
+    subtitle: 'example@gmail.com',
+    title: 'Vini - Dev'
+  };
+
+  close: PoModalAction = {
+    action: () => {
+      this.closeModal();
     },
-];
+    label: 'Fechar',
+    danger: true
+  };
 
-  private onClick() {
-    //alert('Clicked in menu item');
+  confirm: PoModalAction = {
+    action: () => {
+      this.changeLanguage();
+    },
+    label: 'Confirmar'
+  };
+
+  profileActions: Array<PoToolbarAction> = [
+    { icon: 'po-icon-user', label: 'User data'},
+    { icon: 'po-icon-company', label: 'Company data'},
+    { icon: 'po-icon-world', label: 'Idiomas', action:() => this.openModal() },
+    { icon: 'po-icon-exit', label: 'Exit', type: 'danger', separator: true}
+  ];
+
+  sizeOptions: Array<PoCheckboxGroupOption> = [
+    { value: 'ingles', label: 'Inglês' },
+    { value: 'portugues', label: 'Português' }
+  ];
+
+  constructor(
+    private poDialog: PoDialogService,
+    private poNotification: PoNotificationService, 
+    private readonly idiomasApiService: IdiomasApiService
+  ) {}
+
+  openModal(): void {
+    this.modalComponent.open();
+  }
+
+  private changeLanguage() {
+    
+  }
+
+  closeModal() {
+    this.modalComponent.close();
   }
 }

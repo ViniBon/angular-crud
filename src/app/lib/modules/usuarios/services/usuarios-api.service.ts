@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { v4 as uuid } from 'uuid';
-import { SituacaoUsuario } from "../enums/situacao-usuario.enum";
-import { generateIdentifier } from "../../../shared/utils/generate-identificator.utils";
+import { StatusUsuario } from "../enums/status-usuario.enum";
+import { gerarIdentificador } from "../../../shared/utils/generate-identificator.utils";
 
 export interface IUsuario  {
     identificador: string;
@@ -10,62 +10,78 @@ export interface IUsuario  {
     nome: string;
     sobrenome: string;
     usuario: string;
-    telefone: number;
+    telefone: string;
     email: string;
-    dataNasc: number; 
-    status: SituacaoUsuario;
+    dataNasc: string; 
+    status: StatusUsuario;
 };
 
 @Injectable()
 export class UsuariosApiService {
-    private static key: string = 'users';
+    private static nomeTabela: string = 'Usuarios';
 
-    getUsers(): IUsuario[] {
-        const data = localStorage.getItem(UsuariosApiService.key);
-        return data ? JSON.parse(data) : [];
+    getUsuarios(): IUsuario[] {
+        try{
+            const dados = localStorage.getItem(UsuariosApiService.nomeTabela);
+            return dados ? JSON.parse(dados) : [];
+        }catch (erro){
+            console.error('Erro ao buscar usuários no local storage:', erro);
+            return []
+        }
+        
     }
 
     getUserById(id: string): IUsuario | undefined {
-        const users = this.getUsers();
-        return users.find(user => user.id === id);
-    }
-
-    addUser(user: IUsuario): void {
-        const userUuid = uuid();
-        user.id = userUuid;
-        user.identificador = generateIdentifier();
-        user.nomeCompleto = (user.nome).toLowerCase()+ ' ' + (user.sobrenome).toLowerCase()
-
-        const users = this.getUsers();
-        users.push(user);
-        localStorage.setItem(UsuariosApiService.key, JSON.stringify(users));
-    }
-
-    updateUser(user: IUsuario): void {
-        user.nomeCompleto = (user.nome).toLowerCase()+ ' ' + (user.sobrenome).toLowerCase()
-        const users = this.getUsers();
-        const index = users.findIndex(u => u.id === user.id);
-        console.log(index)
-        
-        if (index !== -1) {
-            // Create a new array with the updated user
-            const updatedUsers = [...users];
-            updatedUsers[index] = user;
-            
-            try {
-                // Update local storage
-                localStorage.setItem(UsuariosApiService.key, JSON.stringify(updatedUsers));
-            } catch (error) {
-                console.error('Error updating user in local storage:', error);
-            }
-        } else {
-            console.error('User not found with ID:', user.id);
+        try{
+            const usuarios = this.getUsuarios();
+            return usuarios.find(user => user.id === id);
+        }catch (erro){
+            console.error('Erro ao buscar usuário no local storage:', erro);
+            return 
         }
     }
 
-    deleteUser(id: string): void {
-        let users = this.getUsers();
-        users = users.filter(user => user.id !== id);
-        localStorage.setItem(UsuariosApiService.key, JSON.stringify(users));
+    addUsuario(usuario: IUsuario): void {
+        const usuarioUuid = uuid();
+        usuario.id = usuarioUuid;
+        usuario.identificador = gerarIdentificador();
+        usuario.nomeCompleto = (usuario.nome).toLowerCase()+ ' ' + (usuario.sobrenome).toLowerCase()
+
+        try{
+            const usuarios = this.getUsuarios();
+            usuarios.push(usuario);
+            localStorage.setItem(UsuariosApiService.nomeTabela, JSON.stringify(usuarios));
+        }catch (erro){
+            console.error('Erro ao adicionar usuário no local storage:', erro);
+        }
+    }
+
+    updateUsuario(usuario: IUsuario): void {
+        usuario.nomeCompleto = (usuario.nome).toLowerCase()+ ' ' + (usuario.sobrenome).toLowerCase()
+        const usuarios = this.getUsuarios();
+        const index = usuarios.findIndex(u => u.id === usuario.id);
+        
+        if (index !== -1) {
+            const updatedUsuarios = [...usuarios];
+            updatedUsuarios[index] = usuario;
+            try {
+                localStorage.setItem(UsuariosApiService.nomeTabela, JSON.stringify(updatedUsuarios));
+            } catch (erro) {
+                console.error('Erro ao atualizar usuário no local storage:', erro);
+            }
+        } else {
+            console.error('Usuário não encontrado com ID:', usuario.id);
+        }
+    }
+
+    deleteUsuario(id: string): void {
+        let usuarios = this.getUsuarios();
+        usuarios = usuarios.filter(usuario => usuario.id !== id);
+
+        try{
+            localStorage.setItem(UsuariosApiService.nomeTabela, JSON.stringify(usuarios));
+        }catch (erro){
+            console.error('Erro ao deletar usuário no local storage:', erro);
+        }
     }
 }
