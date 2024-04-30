@@ -1,8 +1,10 @@
 export function checarValidadeData(dataString: string) {
 
-    const dia = parseInt(dataString.substring(0, 2));
-    const mes = parseInt(dataString.substring(2, 4)) - 1;
-    const ano = parseInt(dataString.substring(4));
+    const parts = dataString.split('-');
+
+    const dia = parseInt(parts[2], 10);
+    const mes = parseInt(parts[1], 10) -1;
+    const ano = parseInt(parts[0], 10);
 
     const data = new Date(ano, mes, dia);
 

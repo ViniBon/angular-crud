@@ -14,15 +14,19 @@ export class DetalhesUsuarioComponent implements OnInit {
 
   public telefoneComMascara!: string;
   public dataNascComMascara!: string;
+  public nomeFormatado!: string;
+  public sobrenomeFormatado!: string;
 
   constructor( ){  }
 
   ngOnInit(): void {
-    this.adicionarMascaras(this.usuarioRegistro)
+    this.formatarRegistros(this.usuarioRegistro)
   }
 
-  private adicionarMascaras(data: IUsuario): void{
+  private formatarRegistros(data: IUsuario): void{
     this.telefoneComMascara = formatarNumeroTelefone(data.telefone);
     this.dataNascComMascara = formatarData(data.dataNasc);
+    this.nomeFormatado = data.nome.toLowerCase();
+    this.sobrenomeFormatado = data.sobrenome.toLowerCase();
   }
 }

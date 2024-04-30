@@ -41,13 +41,13 @@ export class GridUsuariosComponent implements OnInit {
         {
           value: StatusUsuario.COMUM!,
           color: 'color-11',
-          label: 'Comum',
+          label: 'COMUM',
           textColor: 'white',
         },
         {
           value: StatusUsuario.ADMIN,
           color: 'color-08',
-          label: 'Admin',
+          label: 'ADMIN',
           textColor: 'white',
         }
       ]

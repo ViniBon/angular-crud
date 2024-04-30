@@ -47,13 +47,13 @@ export class AppComponent {
 
   readonly menus: Array<PoMenuItem> = [
     { 
-      label: 'inicio', 
+      label: 'Início', 
       link: 'inicio', 
       icon: 'po-icon-home',
       action: this.onClick.bind(this) 
     },
     { 
-      label: 'usuarios',
+      label: 'Usuários',
       link: 'usuarios', 
       icon: 'po-icon-user',
       action: this.onClick.bind(this) 
@@ -84,13 +84,12 @@ export class AppComponent {
   };
 
   profileActions: Array<PoToolbarAction> = [
-    { icon: 'po-icon-user', label: 'User data'},
-    { icon: 'po-icon-company', label: 'Company data'},
+    { icon: 'po-icon-user', label: 'Usuário'},
     { icon: 'po-icon-world', label: 'Idiomas', action:() => this.openModal() },
-    { icon: 'po-icon-exit', label: 'Exit', type: 'danger', separator: true}
+    { icon: 'po-icon-exit', label: 'LogOut', type: 'danger', separator: true}
   ];
 
-  sizeOptions: Array<PoCheckboxGroupOption> = [
+  languageOptions: Array<PoCheckboxGroupOption> = [
     { value: 'ingles', label: 'Inglês' },
     { value: 'portugues', label: 'Português' }
   ];

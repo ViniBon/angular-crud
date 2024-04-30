@@ -16,16 +16,16 @@ export class NovoUsuarioPage implements OnInit {
   @ViewChild('inputNome', { static: true })
   inputNome: PoInputComponent | any;
 
-  @ViewChild('inputNome', { static: true })
+  @ViewChild('inputSobrenome', { static: true })
   inputSobrenome: PoInputComponent | any;
 
-  @ViewChild('inputNome', { static: true })
+  @ViewChild('inputEmail', { static: true })
   inputTelefone: PoInputComponent | any;
 
-  @ViewChild('inputNome', { static: true })
+  @ViewChild('inputTelefone', { static: true })
   inputEmail: PoInputComponent | any;
 
-  @ViewChild('inputNome', { static: true })
+  @ViewChild('inputDataNasc', { static: true })
   inputDataNasc: PoInputComponent | any;
 
   @ViewChild('selectStatus', { static: true })
@@ -73,8 +73,8 @@ export class NovoUsuarioPage implements OnInit {
 
   breadcrumb: PoBreadcrumb = {
     items: [
-      { label: 'Inicio', link: '/' },
-      { label: 'Usuarios', link: '/usuarios' },
+      { label: 'Início', link: '/' },
+      { label: 'Usuários', link: '/usuarios' },
       { label: 'Novo usuario', link: '/novo-usuario' },
     ],
   };
@@ -110,7 +110,7 @@ export class NovoUsuarioPage implements OnInit {
     }else{
       this.acoes = this.editarAcoes ;
       this.breadcrumb.items.pop();
-      this.breadcrumb.items.push({ label: 'Editar usuario', link: '/novo-usuario' })
+      this.breadcrumb.items.push({ label: 'Editar usuário', link: '/novo-usuario' })
     }
   
   }
@@ -137,8 +137,8 @@ export class NovoUsuarioPage implements OnInit {
       ]),
       dataNasc: new UntypedFormControl(null, [
         Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(8),
+        Validators.minLength(10),
+        Validators.maxLength(10),
       ]),
       status: new UntypedFormControl(null, [
         Validators.required,
@@ -212,8 +212,7 @@ export class NovoUsuarioPage implements OnInit {
 
   private validarDados(formData: any, isEdicao?: boolean): boolean{
     let telefoneConvertido = Number(formData.telefone);
-    let dataNascConvertido = Number(formData.dataNasc);
-    if (Number.isNaN(telefoneConvertido) || Number.isNaN(dataNascConvertido)) {
+    if (Number.isNaN(telefoneConvertido)) {
       this.notificacao.warning('Há campos inválidos!');
       return false
     }

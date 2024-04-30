@@ -24,8 +24,8 @@ export class UsuariosPage implements OnInit {
 
   breadcrumb: PoBreadcrumb = {
     items: [
-      { label: 'Inicio', link: '/' },
-      { label: 'Usuarios', link: '/usuarios' },
+      { label: 'Início', link: '/' },
+      { label: 'Usuários', link: '/usuarios' },
     ],
   };
 
