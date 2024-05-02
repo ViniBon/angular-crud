@@ -43,53 +43,46 @@ export class AppComponent {
 
   @ViewChild('modal') modalComponent!: PoModalComponent;
 
-  public size: any;
-
   readonly menus: Array<PoMenuItem> = [
     { 
       label: 'Início', 
       link: 'inicio', 
       icon: 'po-icon-home',
-      action: this.onClick.bind(this) 
     },
     { 
       label: 'Usuários',
       link: 'usuarios', 
       icon: 'po-icon-user',
-      action: this.onClick.bind(this) 
     },
   ];
 
-  private onClick() {  }
-
-  profile: PoToolbarProfile = {
+  perfil: PoToolbarProfile = {
     avatar: 'https://via.placeholder.com/48x48?text=AVATAR',
     subtitle: 'example@gmail.com',
     title: 'Vini - Dev'
   };
 
-  close: PoModalAction = {
+  fechar: PoModalAction = {
+    label: 'Fechar',
     action: () => {
       this.closeModal();
     },
-    label: 'Fechar',
-    danger: true
   };
 
-  confirm: PoModalAction = {
+  confirmar: PoModalAction = {
+    label: 'Confirmar',
     action: () => {
       this.changeLanguage();
     },
-    label: 'Confirmar'
   };
 
-  profileActions: Array<PoToolbarAction> = [
+  acoesPeril: Array<PoToolbarAction> = [
     { icon: 'po-icon-user', label: 'Usuário'},
     { icon: 'po-icon-world', label: 'Idiomas', action:() => this.openModal() },
     { icon: 'po-icon-exit', label: 'LogOut', type: 'danger', separator: true}
   ];
 
-  languageOptions: Array<PoCheckboxGroupOption> = [
+  linguagemOpcoes: Array<PoCheckboxGroupOption> = [
     { value: 'ingles', label: 'Inglês' },
     { value: 'portugues', label: 'Português' }
   ];
@@ -98,15 +91,13 @@ export class AppComponent {
     private poDialog: PoDialogService,
     private poNotification: PoNotificationService, 
     private readonly idiomasApiService: IdiomasApiService
-  ) {}
+  ) {  }
 
   openModal(): void {
     this.modalComponent.open();
   }
 
-  private changeLanguage() {
-    
-  }
+  private changeLanguage() {  }
 
   closeModal() {
     this.modalComponent.close();

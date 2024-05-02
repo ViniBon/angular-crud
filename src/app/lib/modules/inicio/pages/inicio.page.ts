@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { PoPageAction } from '@po-ui/ng-components';
 
@@ -13,12 +12,11 @@ export class InicioPage implements OnInit {
     {
       label: 'TESTE',
       type: 'primary',
-      //action: () => this.novoUsuario()
     },
   ];
 
   public get titulo(): string {
-    return 'Inicio';//`${this.global.i18n.literals.bemVindo}, ${this.nomeUsuario}`;
+    return 'Inicio';
   }
 
   ngOnInit(): void { }

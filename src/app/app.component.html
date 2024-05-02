@@ -1,20 +1,20 @@
 <div class="po-wrapper">
   <po-toolbar  
     p-title="Angular Crud" 
-    [p-profile]="profile"
-    [p-profile-actions]="profileActions"
+    [p-profile]="perfil"
+    [p-profile-actions]="acoesPeril"
     #target
   ></po-toolbar>
   <po-modal 
     #modal 
     p-title="Idiomas" 
-    [p-primary-action]="confirm" 
-    [p-secondary-action]="close"> 
+    [p-primary-action]="confirmar" 
+    [p-secondary-action]="fechar"> 
     <po-radio-group 
       class="po-lg-6" 
       name="Size"
       p-label="Escolha o idioma" 
-      [p-options]="languageOptions">
+      [p-options]="linguagemOpcoes">
     </po-radio-group>
   </po-modal>
     

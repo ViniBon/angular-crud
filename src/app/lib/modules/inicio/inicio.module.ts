@@ -9,7 +9,6 @@ import { InicioRoutingModule } from './inicio-routing.module';
     InicioPage
   ],
   imports: [
-   //CoreModule,
     PoPageModule,
     InicioRoutingModule,
     PoAccordionModule

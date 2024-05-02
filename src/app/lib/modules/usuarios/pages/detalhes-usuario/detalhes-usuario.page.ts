@@ -13,11 +13,6 @@ export class DetalhesUsuarioPage implements OnInit {
 
   public usuarioRegistro!: Object;
 
-  constructor(
-    private router: Router,
-    private activateRoute: ActivatedRoute,
-  ){  }
-  
   acoes: Array<PoPageAction> = [
     {
       label: 'Voltar',
@@ -34,8 +29,13 @@ export class DetalhesUsuarioPage implements OnInit {
     ],
   };
 
+  constructor(
+    private router: Router,
+    private activateRoute: ActivatedRoute,
+  ){  }
+
   public get titulo(): string {
-    return 'Detalhes do usuário';//`${this.global.i18n.literals.bemVindo}, ${this.nomeUsuario}`;
+    return 'Detalhes do usuário';
   }
 
   ngOnInit(): void {

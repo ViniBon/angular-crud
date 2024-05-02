@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { v4 as uuid } from 'uuid';
-import { StatusUsuario } from "../enums/status-usuario.enum";
+import { StatusUsuarioEnum } from "../enums/status-usuario.enum";
 import { gerarIdentificador } from "../../../shared/utils/generate-identificator.utils";
 
 export interface IUsuario  {
@@ -13,7 +13,7 @@ export interface IUsuario  {
     telefone: string;
     email: string;
     dataNasc: string; 
-    status: StatusUsuario;
+    status: StatusUsuarioEnum;
 };
 
 @Injectable()
@@ -28,7 +28,6 @@ export class UsuariosApiService {
             console.error('Erro ao buscar usuários no local storage:', erro);
             return []
         }
-        
     }
 
     getUserById(id: string): IUsuario | undefined {

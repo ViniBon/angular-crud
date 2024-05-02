@@ -9,11 +9,6 @@ import { PoBreadcrumb, PoPageAction } from '@po-ui/ng-components';
 })
 export class UsuariosPage implements OnInit {
 
-  constructor(
-    private router: Router,
-    private activateRoute: ActivatedRoute
-  ){  }
-  
   acoes: Array<PoPageAction> = [
     {
       label: 'Novo Usuário',
@@ -29,8 +24,13 @@ export class UsuariosPage implements OnInit {
     ],
   };
 
+  constructor(
+    private router: Router,
+    private activateRoute: ActivatedRoute
+  ){  }
+
   public get titulo(): string {
-    return 'Usuários';//`${this.global.i18n.literals.bemVindo}, ${this.nomeUsuario}`;
+    return 'Usuários';
   }
 
   ngOnInit(): void {  }

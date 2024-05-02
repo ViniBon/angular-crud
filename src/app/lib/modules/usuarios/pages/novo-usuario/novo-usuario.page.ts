@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { PoBreadcrumb, PoDialogService, PoInputComponent, PoNotificationService, PoPageAction, PoSearchComponent, PoSelectComponent, PoSelectOption } from '@po-ui/ng-components';
+import { PoBreadcrumb, PoDialogService, PoInputComponent, PoNotificationService, PoPageAction, PoSelectComponent } from '@po-ui/ng-components';
 import { UsuariosApiService } from '../../services/usuarios-api.service';
 import { checarValidadeData } from '../../../../shared/utils/check-date-validity.utils';
 
@@ -33,15 +33,6 @@ export class NovoUsuarioPage implements OnInit {
 
   public form: UntypedFormGroup = this.criarFormulario();
   public usuarioRegistro: any;
-
-  constructor(
-    private router: Router,
-    private activateRoute: ActivatedRoute,
-    private readonly usuariosApiService: UsuariosApiService, 
-    private notificacao: PoNotificationService,
-    private poDialog: PoDialogService,
-  ){
-  }
 
   acoes: Array<PoPageAction> = []
   
@@ -79,6 +70,15 @@ export class NovoUsuarioPage implements OnInit {
     ],
   };
 
+  constructor(
+    private router: Router,
+    private activateRoute: ActivatedRoute,
+    private readonly usuariosApiService: UsuariosApiService, 
+    private notificacao: PoNotificationService,
+    private poDialog: PoDialogService,
+  ){
+  }
+
   get nomeUsuario(): string {
     return this.form.get('nome')?.value || '';
   }
@@ -100,7 +100,7 @@ export class NovoUsuarioPage implements OnInit {
   }
 
   public get titulo(): string {
-    return 'Novo Usuário';//`${this.global.i18n.literals.bemVindo}, ${this.nomeUsuario}`;
+    return 'Novo Usuário';
   }
 
   ngOnInit(): void {

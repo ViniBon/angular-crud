@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  PoDialogService, PoNotificationService, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
 import { UsuariosApiService } from '../../services/usuarios-api.service';
-import { StatusUsuario } from '../../enums/status-usuario.enum';
+import { StatusUsuarioEnum } from '../../enums/status-usuario.enum';
 
 @Component({
   selector: 'grid-usuarios',
@@ -39,13 +39,13 @@ export class GridUsuariosComponent implements OnInit {
       width: '5%',
       labels: [
         {
-          value: StatusUsuario.COMUM!,
+          value: StatusUsuarioEnum.COMUM!,
           color: 'color-11',
           label: 'COMUM',
           textColor: 'white',
         },
         {
-          value: StatusUsuario.ADMIN,
+          value: StatusUsuarioEnum.ADMIN,
           color: 'color-08',
           label: 'ADMIN',
           textColor: 'white',
